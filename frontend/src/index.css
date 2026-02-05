@@ -1,0 +1,14 @@
+@import url("https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap");
+@import "tailwindcss";
+
+body {
+  font-family: "Google Sans", sans-serif;
+  color: var(--color-slate-50);
+  background-color: var(--color-slate-950);
+}
+
+@layer utilities {
+  .glass-effect {
+    @apply bg-slate-950/5 backdrop-blur-md border border-slate-50/10;
+  }
+}
