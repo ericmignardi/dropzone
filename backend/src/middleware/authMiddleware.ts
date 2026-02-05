@@ -6,7 +6,7 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
   if (!token) return res.status(401).json({ message: "Unauthorized - Token Required" });
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { userId: string };
     req.user = decoded;
     next();
   } catch (error) {
