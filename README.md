@@ -59,7 +59,7 @@ backend/
 ### 1. Clone & Install
 
 ```bash
-git clone https://github.com/yourusername/dropzone.git
+git clone https://github.com/ericmignardi/dropzone.git
 cd dropzone/backend
 npm install
 ```
@@ -90,6 +90,8 @@ JWT_SECRET="your-secret-key"
 CLOUDINARY_CLOUD_NAME="your-cloud-name"
 CLOUDINARY_API_KEY="your-api-key"
 CLOUDINARY_API_SECRET="your-api-secret"
+PORT="your-port-here"
+FRONTEND_URL="your-frontend-url-here"
 ```
 
 ### 4. Setup Database
@@ -107,6 +109,38 @@ npm run dev
 
 Server: `http://localhost:3000`  
 Swagger: `http://localhost:3000/api-docs`
+
+## Docker
+
+### Development (Database Only)
+
+Run PostgreSQL in Docker, frontend/backend locally with hot reload:
+
+```bash
+docker compose -f docker-compose.dev.yml up -d
+cd backend && npm run dev
+cd frontend && npm run dev
+```
+
+### Production (Full Stack)
+
+Build and run all services:
+
+```bash
+# Set Cloudinary env vars
+export CLOUDINARY_CLOUD_NAME=your-cloud-name
+export CLOUDINARY_API_KEY=your-api-key
+export CLOUDINARY_API_SECRET=your-api-secret
+
+# Build and run
+docker compose up --build
+```
+
+Services:
+
+- Frontend: `http://localhost`
+- Backend API: `http://localhost:3000`
+- Swagger: `http://localhost:3000/api-docs`
 
 ## API Endpoints
 

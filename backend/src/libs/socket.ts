@@ -7,7 +7,6 @@ export const initSocket = (socketServer: Server) => {
   io = socketServer;
 };
 
-// Emit helpers - call these from your services
 export const emitFileUploaded = (userId: string, file: File) => {
   io.emit(`file:uploaded:${userId}`, { file });
 };

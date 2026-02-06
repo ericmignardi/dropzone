@@ -9,6 +9,6 @@ body {
 
 @layer utilities {
   .glass-effect {
-    @apply bg-slate-950/5 backdrop-blur-md border border-slate-50/10;
+    @apply border border-slate-50/10 bg-slate-950/5 backdrop-blur-md;
   }
 }

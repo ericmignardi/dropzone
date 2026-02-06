@@ -1,0 +1,14 @@
+# Dependencies
+node_modules
+
+# Build output
+dist
+
+# Generated files
+generated
+
+# Environment
+.env
+
+# Logs
+*.log

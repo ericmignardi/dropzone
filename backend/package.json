@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "prisma generate && tsc",
-    "start": "node dist/src/index.js"
+    "start": "node dist/src/index.js",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "keywords": [],
   "author": "",

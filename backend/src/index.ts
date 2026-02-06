@@ -10,7 +10,6 @@ import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import http from "http";
 import { Server } from "socket.io";
-
 import { initSocket } from "./libs/socket.js";
 
 const app = express();

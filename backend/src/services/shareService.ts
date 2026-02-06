@@ -10,17 +10,13 @@ export const createLink = async (
   password?: string,
   expiresAt?: string
 ): Promise<ShareLink> => {
-  // Verify file exists and belongs to user
   const file = await prisma.file.findUnique({ where: { id: fileId, userId } });
   if (!file) throw new Error("File does not exist");
 
-  // Generate short code
   const shortCode = randomUUID().slice(0, 8);
 
-  // Hash password if provided
   const hashedPassword = password ? await bcryptjs.hash(password, 10) : null;
 
-  // Parse expiration date if provided
   const expiration = expiresAt ? new Date(expiresAt) : null;
 
   const shareLink = await prisma.shareLink.create({
@@ -40,19 +36,16 @@ export const createLink = async (
 };
 
 export const accessSharedFile = async (shortCode: string, password?: string): Promise<File> => {
-  // Find share link by shortCode
   const shareLink = await prisma.shareLink.findUnique({
     where: { shortCode },
     include: { file: true },
   });
   if (!shareLink) throw new Error("Share link not found");
 
-  // Check if expired
   if (shareLink.expiresAt && shareLink.expiresAt < new Date()) {
     throw new Error("Link expired");
   }
 
-  // Check password if protected
   if (shareLink.password) {
     if (!password) throw new Error("Password required");
 
@@ -60,7 +53,6 @@ export const accessSharedFile = async (shortCode: string, password?: string): Pr
     if (!isValid) throw new Error("Invalid password");
   }
 
-  // Increment views counter
   const updatedFile = await prisma.file.update({
     where: { id: shareLink.fileId },
     data: { views: { increment: 1 } },
