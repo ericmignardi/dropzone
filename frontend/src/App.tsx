@@ -6,6 +6,7 @@ import { Dashboard } from "./pages/Dashboard";
 import { Register } from "./pages/Register";
 import { Login } from "./pages/Login";
 import { Share } from "./pages/Share";
+import { NotFound } from "./pages/NotFound";
 
 export const App = () => {
   const { user, verify, isVerifying } = useAuth();
@@ -23,6 +24,7 @@ export const App = () => {
         <Route path={"/login"} element={user ? <Navigate to={"/dashboard"} /> : <Login />} />
         <Route path={"/dashboard"} element={user ? <Dashboard /> : <Navigate to={"/login"} />} />
         <Route path={"/share/:shortCode"} element={<Share />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   );

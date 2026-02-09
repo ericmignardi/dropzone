@@ -145,71 +145,139 @@ export const Dashboard = () => {
   };
 
   return (
-    <section className="flex min-h-screen flex-col justify-center gap-4">
-      <div className="container mx-auto px-4">
+    <section className="flex min-h-screen items-center justify-center gap-4">
+      <div className="container mx-auto flex flex-col gap-8 p-8">
+        {/* Header */}
         <div className="flex items-center justify-between">
-          <h1>Dashboard</h1>
-          <button onClick={handleLogout} disabled={isLoggingOut}>
+          <div>
+            <h1 className="text-2xl font-semibold">Dashboard</h1>
+            <p className="text-base font-normal text-slate-500">Manage your files</p>
+          </div>
+          <button
+            onClick={handleLogout}
+            disabled={isLoggingOut}
+            className="rounded-lg border border-slate-300 px-4 py-2 text-slate-950 transition-colors hover:bg-slate-50"
+          >
             {isLoggingOut ? "Logging out..." : "Logout"}
           </button>
         </div>
 
         {/* Upload */}
-        <div>
-          <form onSubmit={handleSubmit}>
-            <input type="file" name="file" accept="audio/*" />
-            <button disabled={uploading} type="submit">
+        <div className="flex flex-col gap-4 rounded-lg border border-dashed border-slate-300 p-6">
+          <h2 className="text-lg font-semibold">Upload File</h2>
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <input
+              type="file"
+              name="file"
+              accept="audio/*"
+              className="w-full rounded-lg border border-slate-300 px-4 py-2 file:mr-4 file:rounded file:border-0 file:bg-slate-950 file:px-4 file:py-2 file:text-slate-50"
+            />
+            <button
+              disabled={uploading}
+              type="submit"
+              className="w-full rounded-lg bg-slate-950 px-4 py-2 text-slate-50 disabled:opacity-50"
+            >
               {uploading ? "Uploading..." : "Upload"}
             </button>
-            {uploadError && <div>{uploadError}</div>}
+            {uploadError && <div className="text-sm text-red-500">{uploadError}</div>}
           </form>
         </div>
 
         {/* Files */}
-        <div>
-          {loading && <div>Loading files...</div>}
-          {!loading && files.length === 0 && <div>No files</div>}
-          {files.map((file) => (
-            <div key={file.id}>
-              <span>{file.name}</span>
-              <button onClick={() => handleDelete(file.id)} disabled={deletingId === file.id}>
-                {deletingId === file.id ? "Deleting..." : "Delete"}
-              </button>
-              <button onClick={() => handleShare(file.id)} disabled={sharingId === file.id}>
-                {sharingId === file.id ? "Creating..." : "Share"}
-              </button>
+        <div className="flex flex-col gap-4">
+          <h2 className="text-lg font-semibold">Your Files</h2>
+          {loading && <div className="text-slate-500">Loading files...</div>}
+          {!loading && files.length === 0 && (
+            <div className="rounded-lg border border-dashed border-slate-300 p-6 text-center text-slate-500">
+              No files uploaded yet
             </div>
-          ))}
-          {error && <div>{error}</div>}
-          {deleteError && <div>{deleteError}</div>}
+          )}
+          <div className="flex flex-col gap-2">
+            {files.map((file) => (
+              <div
+                key={file.id}
+                className="flex items-center justify-between rounded-lg border border-slate-300 p-4"
+              >
+                <span className="font-medium">{file.name}</span>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => handleShare(file.id)}
+                    disabled={sharingId === file.id}
+                    className="rounded-lg bg-slate-950 px-4 py-2 text-sm text-slate-50 disabled:opacity-50"
+                  >
+                    {sharingId === file.id ? "Creating..." : "Share"}
+                  </button>
+                  <button
+                    onClick={() => handleDelete(file.id)}
+                    disabled={deletingId === file.id}
+                    className="rounded-lg border border-slate-300 px-4 py-2 text-sm text-slate-950 transition-colors hover:bg-slate-50 disabled:opacity-50"
+                  >
+                    {deletingId === file.id ? "Deleting..." : "Delete"}
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+          {error && <div className="text-sm text-red-500">{error}</div>}
+          {deleteError && <div className="text-sm text-red-500">{deleteError}</div>}
         </div>
 
         {/* Share Options */}
-        <div>
-          <h3>Share Options</h3>
-          <input
-            type="password"
-            placeholder="Password (optional)"
-            value={sharePassword}
-            onChange={(e) => setSharePassword(e.target.value)}
-          />
-          <input
-            type="datetime-local"
-            placeholder="Expiry (optional)"
-            value={shareExpiry}
-            onChange={(e) => setShareExpiry(e.target.value)}
-          />
+        <div className="flex flex-col gap-4 rounded-lg border border-dashed border-slate-300 p-6">
+          <h2 className="text-lg font-semibold">Share Options</h2>
+          <p className="text-sm text-slate-500">
+            Configure options before clicking Share on a file
+          </p>
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2">
+              <label htmlFor="sharePassword" className="text-sm">
+                Password (optional)
+              </label>
+              <input
+                id="sharePassword"
+                type="password"
+                placeholder="Enter password"
+                value={sharePassword}
+                onChange={(e) => setSharePassword(e.target.value)}
+                className="w-full rounded-lg border border-slate-300 px-4 py-2 focus:outline-none"
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <label htmlFor="shareExpiry" className="text-sm">
+                Expiry (optional)
+              </label>
+              <input
+                id="shareExpiry"
+                type="datetime-local"
+                value={shareExpiry}
+                onChange={(e) => setShareExpiry(e.target.value)}
+                className="w-full rounded-lg border border-slate-300 px-4 py-2 focus:outline-none"
+              />
+            </div>
+          </div>
         </div>
 
         {/* Share Link Result */}
         {shareLink && (
-          <div>
-            <p>Share Link:</p>
-            <input type="text" value={shareLink} readOnly />
-            <button onClick={copyToClipboard}>Copy</button>
+          <div className="flex flex-col gap-4 rounded-lg border border-green-300 bg-green-50 p-6">
+            <h2 className="text-lg font-semibold text-green-800">Share Link Created</h2>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={shareLink}
+                readOnly
+                className="flex-1 rounded-lg border border-slate-300 px-4 py-2 focus:outline-none"
+              />
+              <button
+                onClick={copyToClipboard}
+                className="rounded-lg bg-slate-950 px-4 py-2 text-slate-50"
+              >
+                Copy
+              </button>
+            </div>
           </div>
         )}
-        {shareError && <div>{shareError}</div>}
+        {shareError && <div className="text-sm text-red-500">{shareError}</div>}
       </div>
     </section>
   );
