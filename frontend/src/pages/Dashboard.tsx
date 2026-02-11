@@ -68,16 +68,17 @@ export const Dashboard = () => {
     setUploading(true);
     setUploadError(null);
 
-    try {
-      const formData = new FormData(e.currentTarget);
+    const form = e.currentTarget;
+    const formData = new FormData(form);
 
+    try {
       const response = await axiosInstance.post("/upload", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
       if (response.status === 201) {
         setFiles((prev) => [...prev, response.data.file]);
-        e.currentTarget.reset();
+        form.reset();
       }
     } catch (error) {
       console.error(error);
