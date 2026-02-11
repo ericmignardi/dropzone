@@ -60,7 +60,6 @@ export const deleteFile = async (userId, fileId) => {
     }
     // Delete from Cloudinary using the cloudinaryId
     await cloudinary.uploader.destroy(file.cloudinaryId, { resource_type: resourceType });
-    // Delete from database
     await prisma.file.delete({
         where: { id: fileId },
     });
@@ -72,7 +71,6 @@ export const downloadFile = async (userId, fileId) => {
     });
     if (!file)
         throw new Error("File not found");
-    // Increment download counter
     const updatedFile = await prisma.file.update({
         where: { id: fileId },
         data: { downloads: { increment: 1 } },

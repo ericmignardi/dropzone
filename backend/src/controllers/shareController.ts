@@ -41,7 +41,7 @@ export const readLink = async (req: Request, res: Response) => {
 
     const file = await shareService.accessSharedFile(shortCode, password);
 
-    res.redirect(file.cloudinaryUrl);
+    res.json({ url: file.cloudinaryUrl });
   } catch (error: any) {
     console.error("Error in readLink (shareController): ", error);
 

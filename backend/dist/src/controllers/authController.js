@@ -10,7 +10,7 @@ export const register = async (req, res) => {
             return res.status(404).json({ message: "User or token not found" });
         res.cookie("token", token, {
             maxAge: 60 * 60 * 24 * 1000,
-            sameSite: "strict",
+            sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
             secure: process.env.NODE_ENV === "production",
             httpOnly: true,
         });
@@ -32,7 +32,7 @@ export const login = async (req, res) => {
             return res.status(404).json({ message: "User or token not found" });
         res.cookie("token", token, {
             maxAge: 60 * 60 * 24 * 1000,
-            sameSite: "strict",
+            sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
             secure: process.env.NODE_ENV === "production",
             httpOnly: true,
         });
@@ -46,7 +46,12 @@ export const login = async (req, res) => {
 };
 export const logout = async (req, res) => {
     try {
-        res.clearCookie("token");
+        res.clearCookie("token", {
+            maxAge: 60 * 60 * 24 * 1000,
+            sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+            secure: process.env.NODE_ENV === "production",
+            httpOnly: true,
+        });
         res.status(200).json({ message: "Logged out successfully" });
     }
     catch (error) {
