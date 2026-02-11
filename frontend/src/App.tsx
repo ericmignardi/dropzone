@@ -15,9 +15,16 @@ export const App = () => {
     verify();
   }, []);
 
+  if (isVerifying) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="text-xl font-semibold">Verifying user...</div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex min-h-screen justify-center">
-      {isVerifying && <div>Verifying user...</div>}
       <Routes>
         <Route path={"/"} element={<Home />} />
         <Route path={"/register"} element={<Register />} />
