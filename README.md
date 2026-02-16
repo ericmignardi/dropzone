@@ -53,7 +53,6 @@ backend/
 ### Prerequisites
 
 - Node.js 18+
-- Docker (for PostgreSQL)
 - Cloudinary account
 
 ### 1. Clone & Install
@@ -64,19 +63,7 @@ cd dropzone/backend
 npm install
 ```
 
-### 2. Start PostgreSQL (Docker)
-
-```bash
-docker run -d \
-  --name dropzone-db \
-  -e POSTGRES_USER=dropzone-user \
-  -e POSTGRES_PASSWORD=dropzone-password \
-  -e POSTGRES_DB=dropzone \
-  -p 5432:5432 \
-  postgres:16
-```
-
-### 3. Configure Environment
+### 2. Configure Environment
 
 ```bash
 cp .env.example .env
@@ -94,14 +81,14 @@ PORT="your-port-here"
 FRONTEND_URL="your-frontend-url-here"
 ```
 
-### 4. Setup Database
+### 3. Setup Database
 
 ```bash
 npx prisma migrate dev
 npx prisma generate
 ```
 
-### 5. Run
+### 4. Run
 
 ```bash
 npm run dev
@@ -109,38 +96,6 @@ npm run dev
 
 Server: `http://localhost:3000`  
 Swagger: `http://localhost:3000/api-docs`
-
-## Docker
-
-### Development (Database Only)
-
-Run PostgreSQL in Docker, frontend/backend locally with hot reload:
-
-```bash
-docker compose -f docker-compose.dev.yml up -d
-cd backend && npm run dev
-cd frontend && npm run dev
-```
-
-### Production (Full Stack)
-
-Build and run all services:
-
-```bash
-# Set Cloudinary env vars
-export CLOUDINARY_CLOUD_NAME=your-cloud-name
-export CLOUDINARY_API_KEY=your-api-key
-export CLOUDINARY_API_SECRET=your-api-secret
-
-# Build and run
-docker compose up --build
-```
-
-Services:
-
-- Frontend: `http://localhost`
-- Backend API: `http://localhost:3000`
-- Swagger: `http://localhost:3000/api-docs`
 
 ## API Endpoints
 
@@ -168,6 +123,16 @@ Events are emitted to user-specific channels (`event:userId`):
 | `file:deleted:{userId}`  | File deleted         | `{ fileId }`        |
 | `share:created:{userId}` | Share link created   | `{ link }`          |
 | `file:accessed:{userId}` | Shared file accessed | `{ fileId, views }` |
+
+## Docker (Local Dev)
+
+Spin up PostgreSQL and run the app locally with hot reload:
+
+```bash
+docker compose up -d
+cd backend && npm run dev
+cd frontend && npm run dev
+```
 
 ## License
 
