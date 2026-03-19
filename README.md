@@ -1,139 +1,85 @@
-# DropZone
+# DropZone 🚀
 
-A real-time file sharing API with cloud storage, shareable links, and WebSocket notifications.
+A real-time file sharing API with cloud storage, shareable links, and WebSocket notifications. Discover, upload, and share your files securely — all with instant updates.
 
-## Technologies
-
-- **Backend**: Node.js, Express 5, TypeScript
-- **Database**: PostgreSQL with Prisma ORM
-- **Storage**: Cloudinary (cloud file storage)
-- **Auth**: JWT with HTTP-only cookies
-- **Real-time**: Socket.io
-- **Validation**: Zod
-- **Docs**: Swagger/OpenAPI
+---
 
 ## Features
 
-- 🔐 **Authentication** - Register, login, logout with JWT cookies
-- 📁 **File Management** - Upload, list, download, delete files
-- 🔗 **Share Links** - Generate links with optional password & expiration
-- ⚡ **Real-time Events** - Socket.io notifications for file/share actions
-- 🛡️ **Security** - Rate limiting, password hashing, input validation
-- 📚 **API Docs** - Interactive Swagger UI at `/api-docs`
+- **🔐 Secure Authentication**: Register, login, and logout with JWT-based HTTP-only cookies for maximum security.
+- **📁 File Management**: Seamlessly upload, list, download, and delete files with robust cloud storage integration.
+- **🔗 Smart Sharing**: Generate secure shareable links with optional password protection and expiration dates.
+- **⚡ Real-time Notifications**: Get instant desktop updates via Socket.io for file uploads, deletions, and shared access.
+- **🛡️ Robust Security**: Built-in rate limiting, password hashing, and schema-based input validation.
+- **📚 Interactive API Docs**: Fully documented REST API with Swagger UI accessible at `/api-docs`.
 
-## Key Learnings
+## Tech Stack
 
-- **Prisma 7 with Adapters** - Using `@prisma/adapter-pg` for PostgreSQL connections
-- **Cloudinary Integration** - Buffer to base64 conversion for direct uploads
-- **Resource Type Handling** - Different Cloudinary resource types for images/video/audio
-- **Socket.io Architecture** - Emit utility pattern for decoupled real-time events
-- **Express 5** - Modern async error handling
-- **Zod Validation** - Schema-based request validation
-- **Cookie-based Auth** - Secure HTTP-only JWT tokens
+- **React 19 & Vite**: Ultra-fast frontend with modern React features and Tailwind CSS 4.
+- **Node.js 18+ & Express 5**: Modern server-side architecture with TypeScript.
+- **Prisma & PostgreSQL**: Type-safe ORM and reliable relational database.
+- **Socket.io**: Bi-directional, real-time communication for instant event delivery.
+- **Cloudinary**: Scalable cloud-based asset management for all file types.
+- **Zod**: Robust, type-safe schema validation for all API requests.
 
-## Project Structure
+---
 
-```
-backend/
-├── src/
-│   ├── controllers/    # Request handlers
-│   ├── services/       # Business logic
-│   ├── routes/         # API routes with Swagger docs
-│   ├── middleware/     # Auth, rate limiting
-│   ├── libs/           # Prisma, Cloudinary, Socket.io
-│   ├── types/          # Zod schemas, TypeScript types
-│   └── utils/          # Error handler, rate limiter
-├── prisma/
-│   └── schema.prisma   # Database schema
-└── generated/          # Prisma client
-```
+## Installation & Setup
 
-## Setup
-
-### Prerequisites
+**Prerequisites:**
 
 - Node.js 18+
-- Cloudinary account
-
-### 1. Clone & Install
+- Docker (optional for local PostgreSQL)
+- Cloudinary account for file storage
 
 ```bash
+# Clone the repository
 git clone https://github.com/ericmignardi/dropzone.git
-cd dropzone/backend
+cd dropzone
+
+# Setup the backend
+cd backend
+npm install
+cp .env.example .env # Configure your Cloudinary and Database credentials
+npx prisma migrate dev
+npx prisma generate
+
+# Setup the frontend
+cd ../frontend
 npm install
 ```
 
-### 2. Configure Environment
+## Usage
+
+**Run the Backend (Local Dev):**
 
 ```bash
-cp .env.example .env
-```
-
-Edit `.env`:
-
-```env
-DATABASE_URL="postgresql://dropzone-user:dropzone-password@localhost:5432/dropzone"
-JWT_SECRET="your-secret-key"
-CLOUDINARY_CLOUD_NAME="your-cloud-name"
-CLOUDINARY_API_KEY="your-api-key"
-CLOUDINARY_API_SECRET="your-api-secret"
-PORT="your-port-here"
-FRONTEND_URL="your-frontend-url-here"
-```
-
-### 3. Setup Database
-
-```bash
-npx prisma migrate dev
-npx prisma generate
-```
-
-### 4. Run
-
-```bash
+cd backend
 npm run dev
 ```
 
-Server: `http://localhost:3000`  
-Swagger: `http://localhost:3000/api-docs`
+**Run the Frontend:**
 
-## API Endpoints
+```bash
+cd frontend
+npm run dev
+```
 
-| Method | Endpoint                         | Description        |
-| ------ | -------------------------------- | ------------------ |
-| POST   | `/api/auth/register`             | Register user      |
-| POST   | `/api/auth/login`                | Login user         |
-| POST   | `/api/auth/logout`               | Logout user        |
-| GET    | `/api/auth/verify`               | Verify token       |
-| POST   | `/api/upload`                    | Upload file        |
-| GET    | `/api/upload/files`              | List files         |
-| GET    | `/api/upload/files/:id`          | Get file           |
-| DELETE | `/api/upload/files/:id`          | Delete file        |
-| GET    | `/api/upload/files/:id/download` | Download file      |
-| POST   | `/api/share/:fileId`             | Create share link  |
-| GET    | `/api/share/:shortCode`          | Access shared file |
-
-## Socket.io Events
-
-Events are emitted to user-specific channels (`event:userId`):
-
-| Event                    | Trigger              | Data                |
-| ------------------------ | -------------------- | ------------------- |
-| `file:uploaded:{userId}` | File uploaded        | `{ file }`          |
-| `file:deleted:{userId}`  | File deleted         | `{ fileId }`        |
-| `share:created:{userId}` | Share link created   | `{ link }`          |
-| `file:accessed:{userId}` | Shared file accessed | `{ fileId, views }` |
-
-## Docker (Local Dev)
-
-Spin up PostgreSQL and run the app locally with hot reload:
+**Docker (PostgreSQL only):**
 
 ```bash
 docker compose up -d
-cd backend && npm run dev
-cd frontend && npm run dev
 ```
 
-## License
+---
 
-MIT
+## Things Learned
+
+Throughout the development of DropZone, several core systems and modern web patterns were explored:
+
+- **Prisma 7 & Data Adapters**: Implementing the new `@prisma/adapter-pg` for optimized PostgreSQL connections.
+- **Cloud Binary Streams**: Managing raw file buffers and converting them for direct cloud uploads.
+- **Socket.io Event Hub**: Designing a decoupled emit utility pattern for user-specific real-time notifications.
+- **Express 5 Async Flow**: Leveraging modern async error handling and middleware patterns.
+- **Secure Auth Patterns**: Implementing HTTP-only JWT cookies to mitigate XSS and CSRF risks.
+- **Resource Typing**: Handling varied file types (images, video, audio) with dynamic cloud storage configurations.
