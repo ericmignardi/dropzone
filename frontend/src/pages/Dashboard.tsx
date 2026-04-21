@@ -170,7 +170,6 @@ export const Dashboard = () => {
             <input
               type="file"
               name="file"
-              accept="audio/*"
               className="w-full rounded-lg border border-slate-300 px-4 py-2 file:mr-4 file:rounded file:border-0 file:bg-slate-950 file:px-4 file:py-2 file:text-slate-50"
             />
             <button

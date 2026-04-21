@@ -12,15 +12,6 @@ import { uploadLimiter } from "../utils/rateLimit.js";
 
 const upload = multer({
   storage: multer.memoryStorage(),
-  fileFilter: (_req, file, cb) => {
-    const allowedMimeTypes = ["audio/mpeg"];
-
-    if (!allowedMimeTypes.includes(file.mimetype)) {
-      return cb(new Error("Mime type not allowed"));
-    }
-
-    cb(null, true);
-  },
   limits: {
     fileSize: 1024 * 1024 * 200, // 200MB
   },

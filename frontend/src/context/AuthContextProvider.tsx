@@ -17,6 +17,7 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
       const response = await axiosInstance.get("/auth/verify");
       if (response.status === 200) {
         setUser(response.data.user);
+        if (!socket.connected) socket.connect();
       } else {
         setUser(null);
       }
@@ -34,6 +35,7 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
       const response = await axiosInstance.post("/auth/register", data);
       if (response.status === 201) {
         setUser(response.data.user);
+        if (!socket.connected) socket.connect();
       } else {
         setUser(null);
       }
