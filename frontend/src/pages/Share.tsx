@@ -25,9 +25,13 @@ export const Share = () => {
       });
 
       if (response.status === 302 || response.status === 200) {
-        // Redirect to file URL
-        if (response.data.url) {
-          window.location.href = response.data.url;
+        // Handle both JSON response and followed redirects
+        const finalUrl = response.data.url || (response.request && response.request.responseURL);
+        
+        if (finalUrl) {
+          window.location.href = finalUrl;
+        } else {
+          setError("Error: Could not retrieve file URL");
         }
       } else if (response.status === 401) {
         setNeedsPassword(true);
