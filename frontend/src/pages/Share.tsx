@@ -19,6 +19,7 @@ export const Share = () => {
     try {
       const params = password ? `?password=${encodeURIComponent(password)}` : "";
       const response = await axiosInstance.get(`/share/${shortCode}${params}`, {
+        withCredentials: false, // Don't send credentials to avoid CORS issues if redirected to Cloudinary
         maxRedirects: 0,
         validateStatus: (status) => status < 500,
       });
